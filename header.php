@@ -70,42 +70,37 @@
                 </a>
             </div>
             
-            <nav class="hidden md:flex items-center space-x-6">
-                <a href="<?php echo home_url('/services'); ?>" class="text-gray-600 hover:text-blue-600 transition-colors">Services</a>
-                <a href="<?php echo home_url('/forum'); ?>" class="text-gray-600 hover:text-blue-600 transition-colors">Forum</a>
-                <a href="<?php echo home_url('/events'); ?>" class="text-gray-600 hover:text-blue-600 transition-colors">Events</a>
-                <a href="<?php echo home_url('/news'); ?>" class="text-gray-600 hover:text-blue-600 transition-colors">News</a>
-            </nav>
-            
-            <div class="flex items-center space-x-4">
-                <?php if (is_user_logged_in()): ?>
-                    <?php $current_user = wp_get_current_user(); ?>
-                    <div class="relative">
-                        <button class="flex items-center space-x-2 text-gray-600 hover:text-blue-600" id="user-menu-toggle">
-                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                <span class="text-blue-600 font-semibold text-sm">
-                                    <?php echo strtoupper(substr($current_user->display_name, 0, 1)); ?>
-                                </span>
-                            </div>
-                            <span><?php echo esc_html($current_user->display_name); ?></span>
-                            <i class="fas fa-chevron-down text-xs"></i>
-                        </button>
+                    <nav class="hidden md:flex items-center space-x-6">
+                        <a href="<?php echo home_url('/'); ?>" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Services</a>
+                        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Events</a>
+                        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Resources</a>
                         
-                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border hidden" id="user-menu">
-                            <div class="py-2">
-                                <?php if (current_user_can('customer')): ?>
-                                    <a href="<?php echo home_url('/dashboard-customer'); ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                                    </a>
-                                <?php elseif (current_user_can('service_provider')): ?>
-                                    <a href="<?php echo home_url('/dashboard-provider'); ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
-                                    </a>
-                                <?php endif; ?>
-                                <a href="<?php echo home_url('/settings'); ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                    <i class="fas fa-cog mr-2"></i>Settings
-                                </a>
-                                <hr class="my-2">
+                        <?php if (is_user_logged_in()): ?>
+                            <?php $user = wp_get_current_user(); ?>
+                            <div class="relative group">
+                                <button class="flex items-center space-x-2 text-gray-700 hover:text-blue-600">
+                                    <img src="<?php echo get_avatar_url($user->ID); ?>" alt="Profile" class="w-8 h-8 rounded-full">
+                                    <span><?php echo $user->display_name; ?></span>
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                                <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
+                                    <?php if (in_array('customer', $user->roles)): ?>
+                                        <a href="<?php echo home_url('/dashboard-customer/'); ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
+                                    <?php elseif (in_array('service_provider', $user->roles)): ?>
+                                        <a href="<?php echo home_url('/dashboard-provider/'); ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
+                                    <?php elseif (in_array('content_creator', $user->roles)): ?>
+                                        <a href="<?php echo home_url('/dashboard-creator/'); ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
+                                    <?php endif; ?>
+                                    <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Settings</a>
+                                    <a href="<?php echo wp_logout_url(); ?>" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</a>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <a href="<?php echo home_url('/login/'); ?>" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
+                            <a href="<?php echo home_url('/register/'); ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Sign Up</a>
+                        <?php endif; ?>
+                    </nav>
                                 <a href="<?php echo wp_logout_url(home_url()); ?>" class="block px-4 py-2 text-red-600 hover:bg-red-50">
                                     <i class="fas fa-sign-out-alt mr-2"></i>Logout
                                 </a>
